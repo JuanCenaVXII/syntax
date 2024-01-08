@@ -1,0 +1,53 @@
+<html>
+<head>
+    <title>Dice Roller</title>
+    <style>
+        .dice {
+            display: inline-block;
+            width: 100px;
+            height: 100px;
+            margin: 10px;
+            background-repeat: no-repeat;
+            background-size: contain;
+        }
+    </style>
+</head>
+<body>
+    <h1>Dice Roller</h1>
+    <button onclick="rollDice()">Roll Dice</button>
+    <p>Total Rolls: <span id="totalRolls">0</span></p>
+    <div id="diceContainer"></div>
+    <script>
+        var totalRolls = 0;
+        var diceContainer = document.getElementById("diceContainer");
+        var totalRollsElement = document.getElementById("totalRolls");
+
+        function rollDice() {
+            var dice1 = Math.floor(Math.random() * 6) + 1;
+            var dice2 = Math.floor(Math.random() * 6) + 1;
+            var diceTotal = dice1 + dice2;
+            totalRolls++;
+            totalRollsElement.innerHTML = totalRolls;
+
+            var dice1Image = new Image();
+            dice1Image.src = "dice" + dice1 + ".png";
+            var dice2Image = new Image();
+            dice2Image.src = "dice" + dice2 + ".png";
+
+            var dice1Element = document.createElement("div");
+            dice1Element.className = "dice";
+            dice1Element.style.backgroundImage = "url('" + dice1Image.src + "')";
+
+            var dice2Element = document.createElement("div");
+            dice2Element.className = "dice";
+            dice2Element.style.backgroundImage = "url('" + dice2Image.src + "')";
+
+            var diceContainerElement = document.createElement("div");
+            diceContainerElement.appendChild(dice1Element);
+            diceContainerElement.appendChild(dice2Element);
+
+            diceContainer.appendChild(diceContainerElement);
+        }
+    </script>
+</body>
+</html>
