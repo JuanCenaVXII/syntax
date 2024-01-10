@@ -1,0 +1,50 @@
+<HTML>
+<button onclick="rollDice()">Roll Dice</button>
+<div id="dice"></div>
+<input type="number" id="query" min="2" max="12">
+<button onclick="checkRolls()">Check Rolls</button>
+<div id="result"></div>
+<div id="graph"></div>
+<script>
+const rollsCount = new Array(13).fill(0);
+let mostFrequentRoll = null;
+
+function rollDice() {
+    const die1 = Math.floor(Math.random() * 6) + 1;
+    const die2 = Math.floor(Math.random() * 6) + 1;
+    const total = die1 + die2;
+
+    rollsCount[total]++;
+    
+    if (mostFrequentRoll === null || rollsCount[total] > rollsCount[mostFrequentRoll]) {
+        mostFrequentRoll = total;
+    }
+
+    document.getElementById('dice').innerHTML =
+        `<img src='die${die1}.png'><img src='die${die2}.png'> Total Roll: ${total} <br> Most Frequent Roll: ${mostFrequentRoll}`;
+    
+    drawGraph();
+}
+
+function checkRolls() {
+    const query = document.getElementById('query').value;
+
+    if (query < 2 || query > 12) {
+        alert("Invalid input! Enter a number between 2 and 12.");
+        return;
+    }
+
+    document.getElementById('result').innerText =
+        `The total roll of ${query} has occurred ${rollsCount[query]} times.`;
+}
+
+function drawGraph() {
+   let graphHTML = '';
+   for (let i=2; i<=12; i++) {
+       graphHTML += `${i}: `.padEnd(5);
+       graphHTML += '#'.repeat(rollsCount[i]);
+       graphHTML += '<br>';
+   }
+   document.getElementById('graph').innerHTML = graphHTML;
+}
+</script>
