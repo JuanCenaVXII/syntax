@@ -1,0 +1,92 @@
+<HTML>
+<button onclick="rollDice()">Roll Dice</button>
+<div id="dice"></div>
+<input type="number" id="query" min="2" max="12">
+<button onclick="checkRolls()">Check Rolls</button>
+<div id="result"></div>
+<div id="graph"></div>
+<button onclick="reset()">Reset</button>
+
+<script>
+let userScore = 0;
+let computerScore = 0;
+let rollsCount = 0;
+let userDice = [0, 0, 0, 0, 0];
+let computerDice = [0, 0, 0, 0, 0];
+let mostFrequentRoll = null;
+
+function rollDice() {
+    if (rollsCount >= 5) {
+        alert("You have reached the maximum number of rolls.");
+        return;
+    }
+
+    for (let i = 0; i < 5; i++) {
+        if (userDice[i] === 0) {
+            userDice[i] = Math.floor(Math.random() * 6) + 1;
+        }
+        if (computerDice[i] === 0) {
+            computerDice[i] = Math.floor(Math.random() * 6) + 1;
+        }
+    }
+
+    rollsCount++;
+
+    document.getElementById('dice').innerHTML =
+        `<img src='die${userDice[0]}.png'><input type="checkbox" id="userDie1" onclick="keepDie(1)"><img src='die${userDice[1]}.png'><input type="checkbox" id="userDie2" onclick="keepDie(2)"><img src='die${userDice[2]}.png'><input type="checkbox" id="userDie3" onclick="keepDie(3)"><img src='die${userDice[3]}.png'><input type="checkbox" id="userDie4" onclick="keepDie(4)"><img src='die${userDice[4]}.png'><input type="checkbox" id="userDie5" onclick="keepDie(5)"> <br> 
+        <img src='die${computerDice[0]}.png'><img src='die${computerDice[1]}.png'><img src='die${computerDice[2]}.png'><img src='die${computerDice[3]}.png'><img src='die${computerDice[4]}.png'>`;
+
+    drawGraph();
+
+    if (rollsCount === 5) {
+        determineWinner();
+    }
+}
+
+function keepDie(dieNumber) {
+    const checkbox = document.getElementById(`userDie${dieNumber}`);
+    if (checkbox.checked) {
+        userDice[dieNumber - 1] = 0;
+    }
+}
+
+function determineWinner() {
+    const userTotal = userDice.reduce((a, b) => a + b, 0);
+    const computerTotal = computerDice.reduce((a, b) => a + b, 0);
+
+    if (userTotal === 21) {
+        userScore++;
+        alert("You win!");
+    } else if (computerTotal === 21) {
+        computerScore++;
+        alert("Computer wins!");
+    } else if (userTotal > 21 && computerTotal > 21) {
+        alert("Both players lose!");
+    } else if (userTotal > 21) {
+        computerScore++;
+        alert("Computer wins!");
+    } else if (computerTotal > 21) {
+        userScore++;
+        alert("You win!");
+    } else if (userTotal > computerTotal) {
+        userScore++;
+        alert("You win!");
+    } else if (computerTotal > userTotal) {
+        computerScore++;
+        alert("Computer wins!");
+    } else {
+        alert("It's a tie!");
+    }
+
+    document.getElementById('result').innerHTML =
+        `User Score: ${userScore} <br> Computer Score: ${computerScore}`;
+
+    reset();
+}
+
+function reset() {
+    rollsCount = 0;
+    userDice = [0, 0, 0, 0, 0];
+    computerDice = [0, 0, 0, 0, 0];
+    document.getElementById('dice').innerHTML
+      </HTML>
